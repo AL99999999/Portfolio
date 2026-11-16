@@ -317,7 +317,6 @@
     durTime.textContent = fmt(t.dur);
     curTime.textContent = '0:00';
     $('#consoleMode').textContent = t.mode === 'preview' ? 'Extrait 30 s' : t.mode === 'stems' ? 'Stems réels' : 'Titre complet';
-    $('#stemNote').textContent = !canWA ? 'Stems & EQ : actifs une fois le site en ligne' : realStems ? 'Stems : pistes séparées réelles' : 'Stems : séparation estimée';
     if ('mediaSession' in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({ title: t.titre, artist: t.artistes, album: 'Prod. ATS', artwork: [{ src: t.cover }] });
     }
@@ -441,17 +440,14 @@
     return api;
   }
   const knobs = $('#knobs');
-  knobs.innerHTML = '<div class="knobs__grp" data-t="Master / EQ"></div><div class="knobs__grp" data-t="Stems"></div>';
-  const [grpEq, grpStem] = $$('.knobs__grp', knobs);
+  knobs.innerHTML = '<div class="knobs__grp" data-t="Master / EQ"></div>';
+  const grpEq = $('.knobs__grp', knobs);
   const db = v => { const g = Math.round((v - .5) * 24); return (g > 0 ? '+' : '') + g; };
   const pct = v => Math.round(v * 100);
   volKnob = makeKnob(grpEq, { label: 'Volume', value: volume, def: .9, show: pct, onChange: v => setVolume(v, 'knob') });
   makeKnob(grpEq, { label: 'Bass', value: .5, def: .5, off: !canWA, show: db, onChange: v => { eq.bass = (v - .5) * 24; if (bass) bass.gain.value = eq.bass; } });
   makeKnob(grpEq, { label: 'Treble', value: .5, def: .5, off: !canWA, show: db, onChange: v => { eq.treble = (v - .5) * 24; if (treble) treble.gain.value = eq.treble; } });
-  makeKnob(grpStem, { label: 'Voix', value: 1, def: 1, off: !canWA, color: 'var(--blue)', show: pct, onChange: v => { stem.voix = v; applyStems(); } });
-  makeKnob(grpStem, { label: 'Prod', value: 1, def: 1, off: !canWA, color: 'var(--green)', show: pct, onChange: v => { stem.prod = v; applyStems(); } });
   setVolume(volume);
-  if (!canWA) $('#stemNote').textContent = 'Stems & EQ : actifs une fois le site en ligne';
 
   // Les potards « montent » à leur valeur quand la console apparaît
   function sweepKnobs() {
@@ -474,9 +470,7 @@
     cv.height = Math.max(1, Math.round(r.height * dpr));
     cv._dpr = dpr;
   }
-  let mqHalf = 0;
-  const mq = $('.marquee__track');
-  const fitAll = () => { fit(wave); fit(spec); mqHalf = mq.scrollWidth / 2 + 18; };
+  const fitAll = () => { fit(wave); fit(spec); };
   addEventListener('resize', fitAll);
 
   const idlePeaks = fakePeaks('ATS');
@@ -686,7 +680,7 @@
   /* ---------------- Boucle d'animation ---------------- */
   let heroVisible = true;
   new IntersectionObserver(es => { heroVisible = es[0].isIntersecting; }).observe($('.hero'));
-  let scrolled = true, prevY = scrollY, sv = 0, mqX = 0, mqDir = 1;
+  let scrolled = true;
   addEventListener('scroll', () => { scrolled = true; }, { passive: true });
   const progress = $('#progress'), contactLogo = $('#contactLogo'), titles = $$('.sec-head__t');
 
@@ -700,15 +694,7 @@
     updateLevels(time);
     drawWave();
 
-    // vitesse de défilement (lissée) → bandeau
     const y = scrollY;
-    sv += ((y - prevY) - sv) * .12; prevY = y;
-    if (!reduced) {
-      if (Math.abs(sv) > .4) mqDir = sv > 0 ? 1 : -1;
-      mqX -= (1 + Math.abs(sv) * .45) * mqDir;
-      if (mqHalf) { if (mqX <= -mqHalf) mqX += mqHalf; if (mqX > 0) mqX -= mqHalf; }
-      mq.style.transform = `translate3d(${mqX.toFixed(1)}px,0,0) skewX(${clamp(sv * -.35, -14, 14).toFixed(2)}deg)`;
-    }
 
     if (heroVisible) {
       let bs = 0;

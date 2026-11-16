@@ -19,14 +19,9 @@ window.ATS = {
   /* ---------- PRODS ----------
      Chaque titre est lu de la façon suivante, dans cet ordre :
 
-     1. « stems » (optionnel) : deux fichiers séparés, la voix seule et la prod seule.
-        Les potards VOIX et PROD règlent alors chaque piste exactement.
-          stems: { voix: 'audio/exo-voix.mp3', prod: 'audio/exo-prod.mp3' }
+     1. « src » : le fichier complet déposé dans  site/audio/  (mp3, m4a, wav).
 
-     2. « src » : le fichier complet déposé dans  site/audio/  (mp3, m4a, wav).
-        Les potards VOIX / PROD fonctionnent par séparation estimée.
-
-     3. « deezer » : si aucun fichier local n'existe, le site lit l'extrait officiel
+     2. « deezer » : si aucun fichier local n'existe, le site lit l'extrait officiel
         de 30 secondes fourni par Deezer et propose un lien vers le titre complet.
 
      « liens » (optionnel) : les adresses exactes du titre sur chaque plateforme.
@@ -117,7 +112,7 @@ window.ATS = {
     {
       titre: 'National Geographic',
       type: 'Bande-annonce fictive',
-      detail: 'Musique originale composée par ATS',
+      detail: 'Montage et musique originale par ATS',
       annee: '',
       src: 'assets/video/national-geographic.mp4',
       poster: 'assets/posters/national-geographic.jpg'
@@ -125,7 +120,7 @@ window.ATS = {
     {
       titre: 'Luminaissance',
       type: 'Court-métrage',
-      detail: 'Festival Hello Planet',
+      detail: 'Festival Hello Planet — musique originale, participation au montage',
       annee: '2023',
       src: 'assets/video/luminaissance.mp4',
       poster: 'assets/posters/luminaissance.jpg'

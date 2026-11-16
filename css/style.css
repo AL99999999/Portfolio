@@ -245,7 +245,7 @@ body:not(.is-loading) .l-g { opacity: .9; }
 .console__artist { color: var(--dim); margin-top: 6px; }
 .console__proj { color: var(--dim); text-align: right; }
 
-.knobs { display: grid; grid-template-columns: 3fr 2fr; gap: 14px; padding: 26px 2px 4px; }
+.knobs { display: grid; grid-template-columns: 1fr; gap: 14px; padding: 26px 2px 4px; }
 .knobs__grp { position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; padding-top: 16px; border-top: 1px solid var(--line); }
 .knobs__grp::before { content: attr(data-t); position: absolute; left: 50%; top: -7px; transform: translateX(-50%); background: var(--panel); padding: 0 8px; font: 500 10px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--dim); white-space: nowrap; }
 .knobs__grp::after { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 6px; border-inline: 1px solid var(--line); }
